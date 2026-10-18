@@ -30,6 +30,7 @@ The full process is itself a proposal: **[RFC-0000: The Proposal Process](rfcs/0
 | [`templates/`](templates/) | The six templates. Copy, don't edit in place. |
 | [`MAP.md`](MAP.md) | Every proposal on the plane × pillar grid, and the maturity heatmap. |
 | [`GOVERNANCE.md`](GOVERNANCE.md) | Roles, decision rules, and how a solo maintainer keeps itself honest. |
+| [`HANDOFF.md`](HANDOFF.md) | Current state and the next steps. Start here if you're picking up work. |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to raise an idea, write a proposal, and review one. |
 
 Architecture Decision Records (ADRs) live next to the code they constrain, in each product repo under `docs/adr/`.
