@@ -1,0 +1,52 @@
+title: "[Idea] "
+labels: ["phase:idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe a **problem**, not a solution. Ideas that start with a solution get argued about as solutions.
+        Upvote ideas you also feel; votes are the demand signal used in weekly triage.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What is someone trying to do, and what gets in the way?
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: Who feels it
+      description: A role, a kind of team, or yourself.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Anything concrete — a number, an incident, a thread, a screenshot. Sanitize anything from work.
+    validations:
+      required: true
+  - type: dropdown
+    id: plane
+    attributes:
+      label: Plane (best guess)
+      multiple: true
+      options:
+        - developer-control
+        - integration-delivery
+        - resource
+        - monitoring-logging
+        - security
+        - cross-cutting
+        - not sure
+  - type: dropdown
+    id: pillar
+    attributes:
+      label: Pillar (best guess)
+      multiple: true
+      options:
+        - legible
+        - trustworthy
+        - answerable
+        - not sure

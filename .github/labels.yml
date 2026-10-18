@@ -1,0 +1,31 @@
+# Applied with scripts/sync-labels.sh (requires the gh CLI).
+- { name: "tier:rfc",                   color: "5319e7", description: "Full RFC" }
+- { name: "tier:lite",                  color: "a371f7", description: "Lite Proposal" }
+- { name: "tier:adr",                   color: "d4c5f9", description: "Architecture Decision Record" }
+
+- { name: "phase:idea",                 color: "ededed", description: "Raised, not yet triaged" }
+- { name: "phase:discovery",            color: "c5def5", description: "Capturing the problem and baseline" }
+- { name: "phase:draft",                color: "bfd4f2", description: "Proposal open for review" }
+- { name: "phase:fcp",                  color: "fbca04", description: "Final Comment Period" }
+- { name: "phase:accepted",             color: "0e8a16", description: "Accepted by the decider" }
+- { name: "phase:declined",             color: "b60205", description: "Declined, with reasons" }
+- { name: "phase:withdrawn",            color: "cccccc", description: "Withdrawn by the author" }
+- { name: "phase:alpha",                color: "1d76db", description: "One pioneer, non-production" }
+- { name: "phase:beta",                 color: "0052cc", description: "A few adopters, measured" }
+- { name: "phase:ga",                   color: "0b3d91", description: "Default path" }
+- { name: "phase:measured",             color: "006b75", description: "Before/after report merged" }
+- { name: "phase:sunset",               color: "5c5c5c", description: "Being removed" }
+
+- { name: "plane:developer-control",    color: "f9d0c4", description: "Developer Control Plane" }
+- { name: "plane:integration-delivery", color: "f9d0c4", description: "Integration & Delivery Plane" }
+- { name: "plane:resource",             color: "f9d0c4", description: "Resource Plane" }
+- { name: "plane:monitoring-logging",   color: "f9d0c4", description: "Monitoring & Logging Plane" }
+- { name: "plane:security",             color: "f9d0c4", description: "Security Plane" }
+- { name: "plane:cross-cutting",        color: "f9d0c4", description: "Shared by all planes" }
+
+- { name: "pillar:legible",             color: "c2e0c6", description: "Can people see the truth of delivery?" }
+- { name: "pillar:trustworthy",         color: "c2e0c6", description: "Can they rely on it?" }
+- { name: "pillar:answerable",          color: "c2e0c6", description: "Can they ask it questions?" }
+
+- { name: "needs:baseline",             color: "e99695", description: "Can't leave Discovery without numbers" }
+- { name: "needs:pioneer",              color: "e99695", description: "Can't enter Alpha without a real user" }

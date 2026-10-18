@@ -1,0 +1,34 @@
+title: "[FCP] RFC-"
+labels: ["phase:fcp"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Final Comment Period.** Add a poll with three options: *Support*, *Support with concerns*, *Block*.
+        A *Block* must be accompanied by a reason **on the PR**, or it counts as a comment.
+        No new scope during FCP.
+  - type: input
+    id: pr
+    attributes:
+      label: Proposal PR
+      description: Link to the pull request. Discussion of the content happens there.
+    validations:
+      required: true
+  - type: input
+    id: closes
+    attributes:
+      label: FCP closes
+      description: Date and time (≥72h for RFCs, ≥48h for Lite Proposals).
+    validations:
+      required: true
+  - type: input
+    id: decider
+    attributes:
+      label: Decider
+    validations:
+      required: true
+  - type: textarea
+    id: asked
+    attributes:
+      label: Who was asked to review
+      description: An FCP with no comments isn't consensus. Record who was invited.
