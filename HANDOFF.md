@@ -2,7 +2,7 @@
 
 Context and next steps for anyone (human or AI) picking up work in this repo. Read this first, then [RFC-0000](rfcs/0000-proposal-process.md) and [GOVERNANCE.md](GOVERNANCE.md).
 
-*Last updated: 2026-10-18.*
+*Last updated: 2026-10-19.*
 
 ## Why this repo exists
 
@@ -20,6 +20,8 @@ The same process maps onto an Atlassian stack at work (Bitbucket PRs for proposa
 | Ideas form (`.github/DISCUSSION_TEMPLATE/ideas.yml`) | ✅ Active (matches the `ideas` category slug) |
 | FCP form (`.github/DISCUSSION_TEMPLATE/fcp.yml`) | ⚠️ Inactive. No `fcp` category exists, and GitHub doesn't support forms on Poll-format categories. Fixed by step 1 below. |
 | "Proposals" GitHub Project | ⬜ Not created yet |
+| Flow diagram (`docs/flow.md`, Mermaid) | ✅ Merged (PR #1) |
+| Interactive flow page | ✅ Live at <https://nondualworks.github.io/proposals/flow/> (GitHub Pages from `main` `/docs`). `#atlassian` opens the work view. |
 | First real proposal | ⬜ Not started |
 
 ## Conventions (quick reference)
@@ -88,6 +90,22 @@ Run the five persona reviews (see GOVERNANCE.md) before asking for FCP, then tak
 ### 5. A second, deliberately small example
 
 `helm_overrides` re-deploy mode as a Lite Proposal, once RFC-0001 is accepted. It shows that not everything needs the full ceremony.
+
+### Queued process refinements
+
+Raised while explaining the process; not yet proposed. Each is a Lite Proposal under the governance rules. Batch them into one *process refinements from first use* Lite if they're small enough.
+
+- **Maturity impact table.** Keep `maturity-aspect` and `level` as the one aspect a proposal bets on and will measure, but add a table to the RFC's *Maturity* section rating all five aspects as *neutral*, *supports*, *moves* or *regresses*. The *regresses* rows surface costs (for example, a new tool adding on-call load is an Operations regression). The Measured Report then checks the primary claim and whether any regression was worse than expected. Touches `templates/rfc.md`, `templates/measured-report.md` and RFC-0000's tag section.
+- **Who runs triage.** `docs/flow.md` shows the Decider running weekly triage, which is true only because the maintainer is also the decider today. Decide whether triage belongs to the maintainer or the decider as a rule.
+
+### Work adaptation notes
+
+For when this process is proposed at work (Atlassian + Teams; Jira workflows are locked enterprise-wide). The venue mapping is in [`docs/flow.md`](docs/flow.md).
+
+- **Teams** for conversation and the comment-period poll (built-in Polls). Copy the tally into the PR's *Decision* section; chat threads are hard to find later. Bitbucket → Teams notifications go through the Teams Workflows app, if the tenant allows it.
+- **Confluence** for Discovery Briefs (co-editing and inline comments suit non-engineers) and as the generated read layer. A Page Properties table on each proposal page plus a Page Properties Report on the parent gives a live index. Never let a document be edited in both Bitbucket and Confluence: the pandoc publish would overwrite Confluence edits.
+- **Keep the proposal itself in a Bitbucket PR.** Confluence has no equivalent of line-level review, a merge decision, or "every Block answered before merge", and no built-in polls.
+- **Jira** Vote button for idea demand; phase as labels with JQL swimlanes. Jira Product Discovery fits ideas and voting better if the org licenses it.
 
 ### After that
 
