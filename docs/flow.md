@@ -2,7 +2,7 @@
 
 The process in [RFC-0000](../rfcs/0000-proposal-process.md), told from the point of view of the people in it.
 
-**Interactive version:** [`docs/flow/index.html`](flow/index.html), published at <https://nondualworks.github.io/proposals/flow/> once GitHub Pages is on. It has a lane per person, a *See it as* filter, and a *Tools* switch between GitHub and Atlassian + Teams. Add `#atlassian` to the link to open it in the work profile.
+**Interactive version:** [`docs/flow/index.html`](flow/index.html), published at <https://nondualworks.github.io/proposals/flow/> once GitHub Pages is on. It has a lane per person, a *See it as* filter, a *Tier* switch that fades what Lite Proposals and ADRs skip, and a *Tools* switch between GitHub and Atlassian + Teams. Add `#atlassian` to the link to open it in the work profile.
 
 ## The five people
 
@@ -61,6 +61,29 @@ sequenceDiagram
     Dec->>Dec: Expand, iterate or sunset
     end
 ```
+
+## Lighter tiers
+
+The diagram above is the **Full RFC** path. The other two tiers skip most of it.
+
+| | Full RFC | Lite Proposal | ADR |
+|---|---|---|---|
+| **Use when** | New capability, golden-path change, a migration, or spans repos | Small, reversible, no migration, one page | Internal decision with no user-facing change, or one made inside an accepted RFC |
+| **Lives in** | `rfcs/` here | `lite/` here | `docs/adr/` in the product repo |
+| **Phases** | All nine | Idea → Draft → Comment period → Decision → GA → Measured | Draft → Decision |
+| **People** | All five | No Pioneer | Author, Reviewers, Decider |
+| **Comment period** | At least 72 hours | At least 48 hours | None; normal PR review |
+| **Discovery Brief** | Required | Not needed | Not needed |
+| **Alpha, Beta, GA gates** | Signed | None | None |
+| **Measured** | Report against the baseline | One measure, noted on the proposal | — |
+
+A Lite Proposal that grows past a page or needs a migration is promoted to a Full RFC. A Full RFC usually produces several ADRs as it's built.
+
+### Which tier?
+
+1. **Does it change what users see or do?** No → **ADR**.
+2. **Does anyone have to migrate?** Yes → **Full RFC**.
+3. **Does it fit on one page?** No → **Full RFC**. Yes → **Lite Proposal**.
 
 ## What each phase proves
 
