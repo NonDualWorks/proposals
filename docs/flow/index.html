@@ -84,7 +84,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
 .lens button i { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--muted)); }
 .lens button[aria-pressed="true"] { border-color: var(--c, var(--ink)); box-shadow: inset 0 0 0 1px var(--c, var(--ink)); }
 .lens button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.tools button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); box-shadow: none; }
+.tools button[aria-pressed="true"], .tiers button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); box-shadow: none; }
 
 .scroller { overflow-x: auto; border-radius: 14px; border: 1px solid var(--rule); background: var(--surface); }
 .board {
@@ -168,8 +168,19 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
 .strip ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .strip li { display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
 .strip li b { font-family: var(--mono); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); min-width: 64px; flex: none; }
+.off { opacity: .18; }
+.phase, .who, .rec, .ev, .rec-h, .ev-h { transition: opacity .2s; }
+.tierq { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 16px; }
+.tierq h2 { margin: 0; font-family: var(--display); font-size: 15px; font-weight: 700; }
+.q { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.yn { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; }
+.yn button { font: 500 12px var(--body); background: var(--surface); color: var(--ink); border: 0; padding: 4px 11px; cursor: pointer; }
+.yn button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.yn button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.verdict { margin-left: auto; font-size: 13px; color: var(--muted); display: flex; align-items: baseline; gap: 6px; }
+.verdict b { font-family: var(--display); font-size: 17px; color: var(--accent); }
 @media (max-width: 700px) { .controls, .lens { align-items: flex-start; justify-content: flex-start; } }
-@media (prefers-reduced-motion: reduce) { .c { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .c, .phase, .who, .rec, .ev, .rec-h, .ev-h { transition: none; } }
 </style>
 </head>
 <body>
@@ -180,6 +191,12 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
       <p class="sub">Nine phases, five people, one place to talk at each stage. A proposal is closed when its numbers are measured, not when it ships.</p>
     </div>
     <div class="controls">
+      <div class="lens tiers" role="group" aria-label="Tier">
+        <span>Tier</span>
+        <button type="button" data-t="full" aria-pressed="true">Full RFC</button>
+        <button type="button" data-t="lite" aria-pressed="false">Lite</button>
+        <button type="button" data-t="adr" aria-pressed="false">ADR</button>
+      </div>
       <div class="lens tools" role="group" aria-label="Tool profile">
         <span>Tools</span>
         <button type="button" data-p="github" aria-pressed="true">GitHub</button>
@@ -203,6 +220,14 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
     </span>
   </div>
 
+  <section class="tierq" aria-label="Which tier?">
+    <h2>Which tier?</h2>
+    <div class="q">Changes what users see or do? <span class="yn" data-q="user"><button type="button" data-v="1" aria-pressed="true">Yes</button><button type="button" data-v="0" aria-pressed="false">No</button></span></div>
+    <div class="q">Anyone has to migrate? <span class="yn" data-q="mig"><button type="button" data-v="1" aria-pressed="true">Yes</button><button type="button" data-v="0" aria-pressed="false">No</button></span></div>
+    <div class="q">Fits on one page? <span class="yn" data-q="page"><button type="button" data-v="1" aria-pressed="false">Yes</button><button type="button" data-v="0" aria-pressed="true">No</button></span></div>
+    <div class="verdict">Use <b id="verdict">Full RFC</b></div>
+  </section>
+
   <div class="scroller">
     <div class="board" id="board">
       <div class="corner">Who ↓ &nbsp; Phase →</div>
@@ -213,13 +238,13 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
 
       <div class="phase s"><div class="chev">Idea</div><div class="gate"><b>exit</b>owner and tier picked</div></div>
       <div class="phase s"><div class="chev">Discovery</div><div class="gate"><b>exit</b>baseline numbers recorded</div></div>
-      <div class="phase d"><div class="chev">Draft</div><div class="gate"><b>exit</b>author says ready</div></div>
-      <div class="phase d"><div class="chev">Comment period</div><div class="gate"><b>exit</b>≥ 72 h, every Block answered</div></div>
+      <div class="phase d"><div class="chev">Draft</div><div class="gate"><b>exit</b><span data-adr="PR in the product repo">author says ready</span></div></div>
+      <div class="phase d"><div class="chev">Comment period</div><div class="gate"><b>exit</b><span data-lite="≥ 48 h, every Block answered">≥ 72 h, every Block answered</span></div></div>
       <div class="phase d"><div class="chev">Decision</div><div class="gate"><b>exit</b>reasons written down</div></div>
       <div class="phase v"><div class="chev">Alpha</div><div class="gate"><b>exit</b>pioneer succeeds unaided</div></div>
       <div class="phase v"><div class="chev">Beta</div><div class="gate"><b>exit</b>security sign-off, docs live</div></div>
-      <div class="phase v"><div class="chev">GA</div><div class="gate"><b>exit</b>SLOs met for 2 weeks</div></div>
-      <div class="phase m"><div class="chev">Measured</div><div class="gate"><b>exit</b>report vs. baseline</div></div>
+      <div class="phase v"><div class="chev">GA</div><div class="gate"><b>exit</b><span data-lite="shipped, nothing to migrate">SLOs met for 2 weeks</span></div></div>
+      <div class="phase m"><div class="chev">Measured</div><div class="gate"><b>exit</b><span data-lite="one measure, noted on the proposal">report vs. baseline</span></div></div>
 
       <!-- Developer -->
       <div class="who" data-lane="dev"><strong>Developer</strong><em data-atl="any product team">anyone who uses the tools</em><q>I just want to ship without filing a ticket.</q></div>
@@ -249,13 +274,13 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
       <div class="who" data-lane="aut"><strong>Author</strong><em data-atl="a platform engineer">whoever writes the proposal</em><q>Show the problem before the solution.</q></div>
       <div class="c" data-lane="aut"><div class="card"><p>Picks it up from triage</p></div></div>
       <div class="c" data-lane="aut"><div class="card"><p>Writes the brief, measures today</p><span class="t read" data-atl="Confluence">Pull request</span></div></div>
-      <div class="c" data-lane="aut"><div class="card"><p>Opens the proposal as a PR</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p data-adr="Writes the ADR as a PR">Opens the proposal as a PR</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
       <div class="c" data-lane="aut"><div class="card"><p>Posts the poll, answers every Block</p><span class="t talk" data-atl="Teams">FCP discussion</span></div></div>
       <div class="c e" data-lane="aut"></div>
       <div class="c" data-lane="aut"><div class="card"><p>Builds the thinnest working slice</p></div></div>
       <div class="c" data-lane="aut"><div class="card"><p>Security review, writes docs</p><span class="t read" data-atl="Confluence">Docs</span></div></div>
-      <div class="c" data-lane="aut"><div class="card"><p>Sets SLOs, retires the old path</p></div></div>
-      <div class="c" data-lane="aut"><div class="card"><p>Writes the before/after report</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p data-lite="Ships it, nothing to migrate">Sets SLOs, retires the old path</p></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p data-lite="Notes the one measure on the proposal">Writes the before/after report</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
 
       <!-- Reviewers -->
       <div class="who" data-lane="rev"><strong>Reviewers</strong><em data-atl="the platform team">anyone, plus five personas</em><q>Where does this break at 3 a.m.?</q></div>
@@ -278,20 +303,20 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
       <div class="c key" data-lane="dec"><div class="card"><p><strong>Merges or declines</strong>, with reasons</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
       <div class="c" data-lane="dec"><div class="card"><p>Signs the Alpha gate</p></div></div>
       <div class="c" data-lane="dec"><div class="card"><p>Signs the Beta gate</p></div></div>
-      <div class="c" data-lane="dec"><div class="card"><p>Signs the GA gate</p></div></div>
+      <div class="c" data-lane="dec" data-skip="lite"><div class="card"><p>Signs the GA gate</p></div></div>
       <div class="c key" data-lane="dec"><div class="card"><p><strong>Expand, iterate or sunset</strong></p></div></div>
 
       <!-- Records -->
       <div class="rec-h"><strong>Leaves behind</strong><em>the permanent record</em></div>
       <div class="rec"><b data-atl="Jira idea + votes">Ideas discussion + votes</b><span data-atl="on the Proposals board">tracked on the Project</span></div>
       <div class="rec"><b>Discovery brief</b>problem and baseline</div>
-      <div class="rec"><b>Proposal PR</b>the argument, reviewed</div>
+      <div class="rec"><b data-adr="ADR file">Proposal PR</b><span data-adr="in the product repo, docs/adr">the argument, reviewed</span></div>
       <div class="rec"><b>Poll tally</b>copied into the PR</div>
-      <div class="rec"><b>Merged proposal</b><span data-atl="published to Confluence, declined ones too">in the repo, declined ones too</span></div>
+      <div class="rec"><b data-adr="Merged ADR">Merged proposal</b><span data-atl="published to Confluence, declined ones too">in the repo, declined ones too</span></div>
       <div class="rec"><b>Gate checklist</b>signed</div>
       <div class="rec"><b>Gate checklist</b>signed</div>
-      <div class="rec"><b>Gate checklist</b>signed</div>
-      <div class="rec"><b>Measured report</b>did the numbers move?</div>
+      <div class="rec" data-skip="lite"><b>Gate checklist</b>signed</div>
+      <div class="rec"><b data-lite="One measure">Measured report</b><span data-lite="noted on the proposal">did the numbers move?</span></div>
 
       <!-- Maturity evidence -->
       <div class="ev-h"><strong>Evidence for</strong><em>the maturity aspect it proves</em></div>
@@ -359,6 +384,56 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
   }
   tools.forEach(function (b) {
     b.addEventListener('click', function () { setProfile(b.getAttribute('data-p')); });
+  });
+
+  /* tiers */
+  board.querySelectorAll('.phase').forEach(function (el, i) { el.setAttribute('data-col', i + 1); });
+  board.querySelectorAll('.who, .rec-h, .ev-h').forEach(function (h) {
+    var n = h.nextElementSibling;
+    for (var i = 1; i <= 9 && n; i++) { n.setAttribute('data-col', i); n = n.nextElementSibling; }
+  });
+  var ON = { full: [1, 2, 3, 4, 5, 6, 7, 8, 9], lite: [1, 3, 4, 5, 8, 9], adr: [3, 5] };
+  var LANES_OFF = { full: [], lite: ['pio'], adr: ['dev', 'pio'] };
+  var NAMES = { full: 'Full RFC', lite: 'Lite Proposal', adr: 'ADR' };
+  var ANSWERS = { full: { user: 1, mig: 1, page: 0 }, lite: { user: 1, mig: 0, page: 1 }, adr: { user: 0, mig: 0, page: 1 } };
+  var tierSwaps = document.querySelectorAll('[data-lite], [data-adr]');
+  tierSwaps.forEach(function (el) { el.setAttribute('data-full', el.textContent); });
+  var tierBtns = document.querySelectorAll('.tiers button');
+  var groups = document.querySelectorAll('.yn');
+  var ans = { user: 1, mig: 1, page: 0 };
+
+  function showAnswers() {
+    groups.forEach(function (g) {
+      g.querySelectorAll('button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(+b.getAttribute('data-v') === ans[g.getAttribute('data-q')]));
+      });
+    });
+  }
+  function setTier(t, fromHelper) {
+    board.querySelectorAll('[data-col], .who').forEach(function (el) {
+      var col = +el.getAttribute('data-col');
+      var lane = el.getAttribute('data-lane');
+      var skip = (el.getAttribute('data-skip') || '').split(' ');
+      var off = (col && ON[t].indexOf(col) < 0) || (lane && LANES_OFF[t].indexOf(lane) >= 0) || skip.indexOf(t) >= 0;
+      el.classList.toggle('off', !!off);
+    });
+    tierSwaps.forEach(function (el) {
+      var v = el.getAttribute('data-' + t);
+      el.textContent = v !== null ? v : el.getAttribute('data-full');
+    });
+    tierBtns.forEach(function (o) { o.setAttribute('aria-pressed', String(o.getAttribute('data-t') === t)); });
+    document.getElementById('verdict').textContent = NAMES[t];
+    if (!fromHelper) { ans = Object.assign({}, ANSWERS[t]); showAnswers(); }
+  }
+  tierBtns.forEach(function (b) { b.addEventListener('click', function () { setTier(b.getAttribute('data-t')); }); });
+  groups.forEach(function (g) {
+    g.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        ans[g.getAttribute('data-q')] = +b.getAttribute('data-v');
+        showAnswers();
+        setTier(!ans.user ? 'adr' : (ans.mig || !ans.page) ? 'full' : 'lite', true);
+      });
+    });
   });
 
   var meta = document.querySelector('meta[name="flow-default"]');
