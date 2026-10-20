@@ -17,6 +17,8 @@ Idea ──▶ Discovery ──▶ Draft ──▶ FCP ──▶ Accepted ──
                                     └──▶ Declined / Withdrawn (merged, with reasons)
 ```
 
+**See it from each person's point of view:** [docs/flow.md](docs/flow.md), with an [interactive version](https://nondualworks.github.io/proposals/flow/) that switches between GitHub and Atlassian + Teams.
+
 The full process is itself a proposal: **[RFC-0000: The Proposal Process](rfcs/0000-proposal-process.md)**.
 
 ## What lives where
