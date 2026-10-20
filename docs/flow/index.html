@@ -151,6 +151,13 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
 .rec-h em { font-style: normal; font-size: 12px; color: var(--muted); }
 .rec { padding: 12px 8px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
 .rec b { font-weight: 600; color: var(--ink); font-size: 12.5px; }
+.ev-h, .ev { border-top: 1px solid var(--rule); }
+.ev-h { position: sticky; left: 0; z-index: 1; background: var(--surface); padding: 12px 16px 14px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+.ev-h strong { font-family: var(--display); font-size: 15px; }
+.ev-h em { font-style: normal; font-size: 12px; color: var(--muted); }
+.ev { padding: 12px 8px 14px; display: flex; flex-wrap: wrap; align-content: center; gap: 4px; }
+.ev.none { color: var(--muted); font-size: 12px; }
+.asp { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; padding: 2px 8px; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; }
 
 .hintrow { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-top: -8px; font-size: 12px; color: var(--muted); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -285,6 +292,18 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
       <div class="rec"><b>Gate checklist</b>signed</div>
       <div class="rec"><b>Gate checklist</b>signed</div>
       <div class="rec"><b>Measured report</b>did the numbers move?</div>
+
+      <!-- Maturity evidence -->
+      <div class="ev-h"><strong>Evidence for</strong><em>the maturity aspect it proves</em></div>
+      <div class="ev"><span class="asp">Adoption</span></div>
+      <div class="ev"><span class="asp">Measurement</span></div>
+      <div class="ev none">—</div>
+      <div class="ev none">—</div>
+      <div class="ev"><span class="asp">Investment</span></div>
+      <div class="ev none">—</div>
+      <div class="ev"><span class="asp">Operations</span></div>
+      <div class="ev"><span class="asp">Operations</span><span class="asp">Interfaces</span></div>
+      <div class="ev"><span class="asp">Measurement</span><span class="asp">Adoption</span></div>
     </div>
   </div>
 
@@ -302,7 +321,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw
       <ul>
         <li><b>Where</b>Plane: developer interface, delivery, resources, monitoring, security</li>
         <li><b>Why</b>Pillar: makes delivery legible, trustworthy or answerable</li>
-        <li><b>How far</b>Maturity: which aspect moves, e.g. Interfaces L1 → L2</li>
+        <li><b>How far</b>Maturity: which aspect moves, e.g. Interfaces L1 → L2. Levels describe the team, so they live in the heatmap, not here.</li>
       </ul>
     </section>
     <section class="strip">
