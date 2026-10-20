@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Platform Proposal Flow</title>
+<meta name="flow-default" content="github">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+html { color-scheme: light; }
+body { margin: 0; }
+
+/* Layout: a swimlane board. Columns are the nine phases (grouped Shape → Decide → Deliver → Learn), rows are the five people in the flow, and the last row is what each phase leaves behind. Chip colour encodes the job a tool does, so it stays the same when the tool profile changes. */
+:root {
+  --bg: #eef2f5;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #5b6875;
+  --rule: #d3dbe2;
+  --accent: #0d6b87;
+
+  --g-shape: #4f7f5d;   --g-shape-t: #e1ede3;
+  --g-decide: #9a6a12;  --g-decide-t: #f6ead2;
+  --g-deliver: #2c5fa8; --g-deliver-t: #dfe8f6;
+  --g-learn: #7c4f8f;   --g-learn-t: #eee2f3;
+
+  --l-dev: #2c5fa8; --l-pio: #4f7f5d; --l-aut: #0d6b87; --l-rev: #9a6a12; --l-dec: #7c4f8f;
+
+  --j-track: #dbe6fb;    --j-track-i: #1f4b99;
+  --j-talk: #e5e2fa;     --j-talk-i: #4a3fa0;
+  --j-review: #d9eef3;   --j-review-i: #0d5c73;
+  --j-read: #e0eef0;     --j-read-i: #22605c;
+  --j-workshop: #fbe3e4; --j-workshop-i: #9a2f3a;
+
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11171d; --surface: #19222b; --ink: #e6edf3; --muted: #9aa8b5; --rule: #2b3742; --accent: #5cc0dd;
+    --g-shape: #8cc39a; --g-shape-t: #1c2c21; --g-decide: #e2b45e; --g-decide-t: #33281a;
+    --g-deliver: #8fb2ea; --g-deliver-t: #1b2638; --g-learn: #c9a2da; --g-learn-t: #2c2133;
+    --l-dev: #8fb2ea; --l-pio: #8cc39a; --l-aut: #5cc0dd; --l-rev: #e2b45e; --l-dec: #c9a2da;
+    --j-track: #1d2c47; --j-track-i: #a9c4f5; --j-talk: #272449; --j-talk-i: #c2bbf5;
+    --j-review: #15313a; --j-review-i: #8fd5e8; --j-read: #18302f; --j-read-i: #95d3cc;
+    --j-workshop: #3a1e22; --j-workshop-i: #f2a9b1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11171d; --surface: #19222b; --ink: #e6edf3; --muted: #9aa8b5; --rule: #2b3742; --accent: #5cc0dd;
+  --g-shape: #8cc39a; --g-shape-t: #1c2c21; --g-decide: #e2b45e; --g-decide-t: #33281a;
+  --g-deliver: #8fb2ea; --g-deliver-t: #1b2638; --g-learn: #c9a2da; --g-learn-t: #2c2133;
+  --l-dev: #8fb2ea; --l-pio: #8cc39a; --l-aut: #5cc0dd; --l-rev: #e2b45e; --l-dec: #c9a2da;
+  --j-track: #1d2c47; --j-track-i: #a9c4f5; --j-talk: #272449; --j-talk-i: #c2bbf5;
+  --j-review: #15313a; --j-review-i: #8fd5e8; --j-read: #18302f; --j-read-i: #95d3cc;
+  --j-workshop: #3a1e22; --j-workshop-i: #f2a9b1;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 14px; line-height: 1.4;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 40px;
+}
+.wrap { max-width: 1480px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw, 40px); line-height: 1.05; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.sub { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+
+.controls { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.lens { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: flex-end; }
+.lens > span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+.lens button {
+  font: 500 13px var(--body); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 5px 12px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.lens button i { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--muted)); }
+.lens button[aria-pressed="true"] { border-color: var(--c, var(--ink)); box-shadow: inset 0 0 0 1px var(--c, var(--ink)); }
+.lens button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tools button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); box-shadow: none; }
+
+.scroller { overflow-x: auto; border-radius: 14px; border: 1px solid var(--rule); background: var(--surface); }
+.board {
+  display: grid; min-width: 1320px;
+  grid-template-columns: 200px repeat(9, minmax(124px, 1fr));
+}
+.board > div { min-width: 0; }
+
+.corner { grid-row: span 2; padding: 14px 16px; border-bottom: 1px solid var(--rule); display: flex; align-items: end;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); position: sticky; left: 0; background: var(--surface); z-index: 2; }
+.grp { padding: 10px 12px 6px; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .01em; color: var(--gc); border-left: 1px solid var(--rule); }
+.grp small { font-family: var(--body); font-weight: 400; font-size: 12px; color: var(--muted); margin-left: 6px; }
+.phase { padding: 4px 6px 12px; border-bottom: 1px solid var(--rule); }
+.phase .chev {
+  background: var(--gt); color: var(--gc); padding: 7px 18px 7px 16px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 8px 50%);
+  font-family: var(--display); font-weight: 700; font-size: 15px;
+}
+.phase .gate { margin-top: 7px; padding: 0 6px; font-size: 11.5px; color: var(--muted); display: flex; gap: 5px; }
+.phase .gate b { font-family: var(--mono); font-weight: 500; font-size: 10px; letter-spacing: .06em; color: var(--gc); text-transform: uppercase; flex: none; padding-top: 1px; }
+.s { --gc: var(--g-shape); --gt: var(--g-shape-t); }
+.d { --gc: var(--g-decide); --gt: var(--g-decide-t); }
+.v { --gc: var(--g-deliver); --gt: var(--g-deliver-t); }
+.m { --gc: var(--g-learn); --gt: var(--g-learn-t); }
+
+.who {
+  position: sticky; left: 0; z-index: 1; background: var(--surface);
+  padding: 12px 14px 12px 16px; border-bottom: 1px solid var(--rule); border-left: 4px solid var(--c);
+  display: flex; flex-direction: column; gap: 4px; justify-content: center;
+}
+.who strong { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.who em { font-style: normal; font-size: 12.5px; color: var(--muted); }
+.who q { font-size: 12.5px; color: var(--c); quotes: "“" "”"; }
+
+.c { padding: 10px 6px; border-bottom: 1px solid var(--rule); position: relative; display: flex; align-items: center; transition: opacity .2s; }
+.c.e::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--rule); }
+.card {
+  position: relative; width: 100%; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--c);
+  padding: 8px 9px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+}
+.card p { margin: 0; font-size: 13px; line-height: 1.3; }
+.t { font-family: var(--mono); font-size: 10.5px; letter-spacing: .02em; padding: 2px 7px; border-radius: 4px; background: var(--tb); color: var(--ti); }
+.track    { --tb: var(--j-track);    --ti: var(--j-track-i); }
+.talk     { --tb: var(--j-talk);     --ti: var(--j-talk-i); }
+.review   { --tb: var(--j-review);   --ti: var(--j-review-i); }
+.read     { --tb: var(--j-read);     --ti: var(--j-read-i); }
+.workshop { --tb: var(--j-workshop); --ti: var(--j-workshop-i); }
+
+[data-lane="dev"] { --c: var(--l-dev); }
+[data-lane="pio"] { --c: var(--l-pio); }
+[data-lane="aut"] { --c: var(--l-aut); }
+[data-lane="rev"] { --c: var(--l-rev); }
+[data-lane="dec"] { --c: var(--l-dec); }
+
+.key .card { border-left-color: var(--accent); }
+.board[data-focus="dev"] [data-lane]:not([data-lane="dev"]),
+.board[data-focus="pio"] [data-lane]:not([data-lane="pio"]),
+.board[data-focus="aut"] [data-lane]:not([data-lane="aut"]),
+.board[data-focus="rev"] [data-lane]:not([data-lane="rev"]),
+.board[data-focus="dec"] [data-lane]:not([data-lane="dec"]) { opacity: .22; }
+
+.rec-h { position: sticky; left: 0; z-index: 1; background: var(--surface); padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+.rec-h strong { font-family: var(--display); font-size: 15px; }
+.rec-h em { font-style: normal; font-size: 12px; color: var(--muted); }
+.rec { padding: 12px 8px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.rec b { font-weight: 600; color: var(--ink); font-size: 12.5px; }
+
+.hintrow { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-top: -8px; font-size: 12px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+.strips { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.strip { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.strip h2 { margin: 0; font-family: var(--display); font-size: 16px; font-weight: 700; }
+.strip ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.strip li { display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
+.strip li b { font-family: var(--mono); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); min-width: 64px; flex: none; }
+@media (max-width: 700px) { .controls, .lens { align-items: flex-start; justify-content: flex-start; } }
+@media (prefers-reduced-motion: reduce) { .c { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>How a platform idea becomes a measured feature</h1>
+      <p class="sub">Nine phases, five people, one place to talk at each stage. A proposal is closed when its numbers are measured, not when it ships.</p>
+    </div>
+    <div class="controls">
+      <div class="lens tools" role="group" aria-label="Tool profile">
+        <span>Tools</span>
+        <button type="button" data-p="github" aria-pressed="true">GitHub</button>
+        <button type="button" data-p="atlassian" aria-pressed="false">Atlassian + Teams</button>
+      </div>
+      <div class="lens people" role="group" aria-label="See the flow as">
+        <span>See it as</span>
+        <button type="button" data-f="" aria-pressed="true">Everyone</button>
+        <button type="button" data-f="dev" aria-pressed="false" style="--c: var(--l-dev)"><i></i>Developer</button>
+        <button type="button" data-f="pio" aria-pressed="false" style="--c: var(--l-pio)"><i></i>Pioneer</button>
+        <button type="button" data-f="aut" aria-pressed="false" style="--c: var(--l-aut)"><i></i>Author</button>
+        <button type="button" data-f="rev" aria-pressed="false" style="--c: var(--l-rev)"><i></i>Reviewers</button>
+        <button type="button" data-f="dec" aria-pressed="false" style="--c: var(--l-dec)"><i></i>Decider</button>
+      </div>
+    </div>
+  </header>
+  <div class="hintrow">
+    <span>Pick a person to follow their path. The process stays the same when you switch tools; only the venues change.</span>
+    <span class="legend">Chip colour is the job:
+      <span class="t track">track</span><span class="t talk">talk</span><span class="t review">review</span><span class="t read">read</span><span class="t workshop">workshop</span>
+    </span>
+  </div>
+
+  <div class="scroller">
+    <div class="board" id="board">
+      <div class="corner">Who ↓ &nbsp; Phase →</div>
+      <div class="grp s" style="grid-column: span 2">Shape <small>is it real?</small></div>
+      <div class="grp d" style="grid-column: span 3">Decide <small>should we?</small></div>
+      <div class="grp v" style="grid-column: span 3">Deliver <small>does it work?</small></div>
+      <div class="grp m">Learn <small>did it help?</small></div>
+
+      <div class="phase s"><div class="chev">Idea</div><div class="gate"><b>exit</b>owner and tier picked</div></div>
+      <div class="phase s"><div class="chev">Discovery</div><div class="gate"><b>exit</b>baseline numbers recorded</div></div>
+      <div class="phase d"><div class="chev">Draft</div><div class="gate"><b>exit</b>author says ready</div></div>
+      <div class="phase d"><div class="chev">Comment period</div><div class="gate"><b>exit</b>≥ 72 h, every Block answered</div></div>
+      <div class="phase d"><div class="chev">Decision</div><div class="gate"><b>exit</b>reasons written down</div></div>
+      <div class="phase v"><div class="chev">Alpha</div><div class="gate"><b>exit</b>pioneer succeeds unaided</div></div>
+      <div class="phase v"><div class="chev">Beta</div><div class="gate"><b>exit</b>security sign-off, docs live</div></div>
+      <div class="phase v"><div class="chev">GA</div><div class="gate"><b>exit</b>SLOs met for 2 weeks</div></div>
+      <div class="phase m"><div class="chev">Measured</div><div class="gate"><b>exit</b>report vs. baseline</div></div>
+
+      <!-- Developer -->
+      <div class="who" data-lane="dev"><strong>Developer</strong><em data-atl="any product team">anyone who uses the tools</em><q>I just want to ship without filing a ticket.</q></div>
+      <div class="c" data-lane="dev"><div class="card"><p>Raises a pain point, upvotes others</p><span class="t track" data-atl="Jira">Ideas discussion</span></div></div>
+      <div class="c" data-lane="dev"><div class="card"><p>Shares numbers and war stories</p></div></div>
+      <div class="c e" data-lane="dev"></div>
+      <div class="c" data-lane="dev"><div class="card"><p>Votes in the poll</p><span class="t talk" data-atl="Teams poll">Discussion poll</span></div></div>
+      <div class="c e" data-lane="dev"></div>
+      <div class="c e" data-lane="dev"></div>
+      <div class="c e" data-lane="dev"></div>
+      <div class="c" data-lane="dev"><div class="card"><p>Uses the new default path</p><span class="t read" data-atl="Confluence">Docs</span></div></div>
+      <div class="c" data-lane="dev"><div class="card"><p>Answers the DX survey</p></div></div>
+
+      <!-- Pioneer -->
+      <div class="who" data-lane="pio"><strong>Pioneer</strong><em>the first real user</em><q>We'll try it first, for real.</q></div>
+      <div class="c e" data-lane="pio"></div>
+      <div class="c" data-lane="pio"><div class="card"><p>Signs up as first user</p></div></div>
+      <div class="c" data-lane="pio"><div class="card"><p>Checks the "today vs. after" story</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c e" data-lane="pio"></div>
+      <div class="c e" data-lane="pio"></div>
+      <div class="c" data-lane="pio"><div class="card"><p>Uses it in non-prod</p></div></div>
+      <div class="c" data-lane="pio"><div class="card"><p>Moves real work onto it</p></div></div>
+      <div class="c e" data-lane="pio"></div>
+      <div class="c" data-lane="pio"><div class="card"><p>Supplies the after numbers</p></div></div>
+
+      <!-- Author -->
+      <div class="who" data-lane="aut"><strong>Author</strong><em data-atl="a platform engineer">whoever writes the proposal</em><q>Show the problem before the solution.</q></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Picks it up from triage</p></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Writes the brief, measures today</p><span class="t read" data-atl="Confluence">Pull request</span></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Opens the proposal as a PR</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Posts the poll, answers every Block</p><span class="t talk" data-atl="Teams">FCP discussion</span></div></div>
+      <div class="c e" data-lane="aut"></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Builds the thinnest working slice</p></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Security review, writes docs</p><span class="t read" data-atl="Confluence">Docs</span></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Sets SLOs, retires the old path</p></div></div>
+      <div class="c" data-lane="aut"><div class="card"><p>Writes the before/after report</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+
+      <!-- Reviewers -->
+      <div class="who" data-lane="rev"><strong>Reviewers</strong><em data-atl="the platform team">anyone, plus five personas</em><q>Where does this break at 3 a.m.?</q></div>
+      <div class="c" data-lane="rev"><div class="card"><p>Ranks the top ideas monthly</p><span class="t workshop" data-atl="Mural">Discussion votes</span></div></div>
+      <div class="c e" data-lane="rev"></div>
+      <div class="c" data-lane="rev"><div class="card"><p>Comments line by line</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c" data-lane="rev"><div class="card"><p>Support · Concerns · Block</p><span class="t talk" data-atl="Teams poll">Discussion poll</span></div></div>
+      <div class="c e" data-lane="rev"></div>
+      <div class="c e" data-lane="rev"></div>
+      <div class="c" data-lane="rev"><div class="card"><p>Security and SRE review</p></div></div>
+      <div class="c" data-lane="rev"><div class="card"><p>Joins the support rota</p></div></div>
+      <div class="c e" data-lane="rev"></div>
+
+      <!-- Decider -->
+      <div class="who" data-lane="dec"><strong>Decider</strong><em data-atl="tech lead or product owner">the maintainer, for now</em><q>Votes advise. I decide, and write why.</q></div>
+      <div class="c" data-lane="dec"><div class="card"><p>Weekly triage, picks the tier</p><span class="t track" data-atl="Jira">Project board</span></div></div>
+      <div class="c e" data-lane="dec"></div>
+      <div class="c e" data-lane="dec"></div>
+      <div class="c" data-lane="dec"><div class="card"><p>Checks who was asked</p></div></div>
+      <div class="c key" data-lane="dec"><div class="card"><p><strong>Merges or declines</strong>, with reasons</p><span class="t review" data-atl="Bitbucket PR">Pull request</span></div></div>
+      <div class="c" data-lane="dec"><div class="card"><p>Signs the Alpha gate</p></div></div>
+      <div class="c" data-lane="dec"><div class="card"><p>Signs the Beta gate</p></div></div>
+      <div class="c" data-lane="dec"><div class="card"><p>Signs the GA gate</p></div></div>
+      <div class="c key" data-lane="dec"><div class="card"><p><strong>Expand, iterate or sunset</strong></p></div></div>
+
+      <!-- Records -->
+      <div class="rec-h"><strong>Leaves behind</strong><em>the permanent record</em></div>
+      <div class="rec"><b data-atl="Jira idea + votes">Ideas discussion + votes</b><span data-atl="on the Proposals board">tracked on the Project</span></div>
+      <div class="rec"><b>Discovery brief</b>problem and baseline</div>
+      <div class="rec"><b>Proposal PR</b>the argument, reviewed</div>
+      <div class="rec"><b>Poll tally</b>copied into the PR</div>
+      <div class="rec"><b>Merged proposal</b><span data-atl="published to Confluence, declined ones too">in the repo, declined ones too</span></div>
+      <div class="rec"><b>Gate checklist</b>signed</div>
+      <div class="rec"><b>Gate checklist</b>signed</div>
+      <div class="rec"><b>Gate checklist</b>signed</div>
+      <div class="rec"><b>Measured report</b>did the numbers move?</div>
+    </div>
+  </div>
+
+  <div class="strips">
+    <section class="strip">
+      <h2>Three rules</h2>
+      <ul>
+        <li><b>One venue</b><span data-atl="Talk in Jira and Teams until there's a PR, then only on the PR.">Talk in the Discussion until there's a PR, then only on the PR.</span></li>
+        <li><b>Votes advise</b>The decider decides, and writes down why.</li>
+        <li><b>Keep the no's</b>Declined proposals stay, so ideas don't return without new evidence.</li>
+      </ul>
+    </section>
+    <section class="strip">
+      <h2>Every proposal is tagged</h2>
+      <ul>
+        <li><b>Where</b>Plane: developer interface, delivery, resources, monitoring, security</li>
+        <li><b>Why</b>Pillar: makes delivery legible, trustworthy or answerable</li>
+        <li><b>How far</b>Maturity: which aspect moves, e.g. Interfaces L1 → L2</li>
+      </ul>
+    </section>
+    <section class="strip">
+      <h2>Not everything needs this</h2>
+      <ul>
+        <li><b>ADR</b>Internal decision, no user change. A short record next to the code.</li>
+        <li><b>Lite</b>Small and reversible. One page, 48 h comment period.</li>
+        <li><b>Full</b>New capability or a migration. The whole flow above.</li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  var board = document.getElementById('board');
+
+  var people = document.querySelectorAll('.people button');
+  people.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-f');
+      if (f) board.setAttribute('data-focus', f); else board.removeAttribute('data-focus');
+      people.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+
+  var swaps = document.querySelectorAll('[data-atl]');
+  swaps.forEach(function (el) { el.setAttribute('data-gh', el.textContent); });
+  var tools = document.querySelectorAll('.tools button');
+  function setProfile(p) {
+    swaps.forEach(function (el) {
+      el.textContent = p === 'atlassian' ? el.getAttribute('data-atl') : el.getAttribute('data-gh');
+    });
+    tools.forEach(function (o) { o.setAttribute('aria-pressed', o.getAttribute('data-p') === p ? 'true' : 'false'); });
+  }
+  tools.forEach(function (b) {
+    b.addEventListener('click', function () { setProfile(b.getAttribute('data-p')); });
+  });
+
+  var meta = document.querySelector('meta[name="flow-default"]');
+  var fromHash = (location.hash || '').slice(1);
+  setProfile(fromHash === 'atlassian' || fromHash === 'github' ? fromHash : (meta && meta.content) || 'github');
+  window.addEventListener('hashchange', function () {
+    var h = (location.hash || '').slice(1);
+    if (h === 'atlassian' || h === 'github') setProfile(h);
+  });
+})();
+</script>
+</body>
+</html>
