@@ -62,6 +62,25 @@ sequenceDiagram
     end
 ```
 
+## What each phase proves
+
+The [CNCF Platform Engineering Maturity Model](https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/) has levels, not phases, and it doesn't prescribe artifacts. The two run on different clocks: phases describe one proposal over weeks, levels describe the team over quarters. So levels stay out of the flow and live in the heatmap in [MAP.md](../MAP.md).
+
+What links them is evidence. Each phase leaves an artifact that proves something about one maturity aspect:
+
+| Phase | Leaves behind | Evidence for | Why |
+|---|---|---|---|
+| Idea | Votes on ideas | **Adoption** | Teams asking for things is *intrinsic pull* (L3), not a mandate |
+| Discovery | Baseline numbers | **Measurement** | Numbers exist before anything is built |
+| Decision | Merged or declined proposal, with reasons | **Investment** | Work is funded on expected value, *as product* (L3) |
+| Beta | Signed gate: security, docs | **Operations** | Ownership and support exist before rollout |
+| GA | SLOs, support rota, a default path with docs | **Operations**, **Interfaces** | Self-service replaces tickets, and someone owns it |
+| Measured | Before/after report | **Measurement**, **Adoption** | The only artifact that fills the heatmap |
+
+Draft, comment period and Alpha matter, but they don't produce maturity evidence on their own.
+
+The process is how the team produces its maturity evidence, so there's no separate assessment exercise. Asked "are we L2 or L3 on Adoption?", point at the vote counts and the Measured reports.
+
 ## Same process, different venues
 
 This repo is the reference implementation. The rules don't change between tool stacks; only where each step happens does.
