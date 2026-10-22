@@ -12,6 +12,8 @@ How a platform engineering team describes what it offers, so customers, tools, d
 | [concepts.md](concepts.md) | Reference | The tool-neutral vocabulary, and how Jira, Linear and GitHub express it |
 | [offerings-menu.md](offerings-menu.md) | Reference | The generic menu, journeys and building blocks, requests versus releases, the component test, a 15-component starter set, naming |
 | [maturity-paths.md](maturity-paths.md) | Explanation | Evolve an ad-hoc (L1) offering to self-service, with a worked example |
+| [communication.md](communication.md) | Reference | Channel kinds and naming, shared channels, the standard notices, partner and UAT channels |
+| [projects-and-releases.md](projects-and-releases.md) | Explanation | Project naming, landing pages and closing; projects spanning offerings; the two-layer calendar; code-to-offering rules |
 | [atlassian-setup.md](atlassian-setup.md) | How-to | Set the model up in Jira, Teams, Confluence and Bitbucket, including the proposals board |
 | [new-customer-playbook.md](new-customer-playbook.md) | How-to | Apply all of this when approaching a new customer |
 | [offering-template.md](offering-template.md) | Template | Create a catalog entry and docs skeleton for one offering |
@@ -39,10 +41,11 @@ Plane          Resource                    a tag: where it lives in the platform
 2. **Planes say where; concerns say why.** A plane is part of the platform's architecture. Security compliance, FinOps and reliability are reasons work exists, and they cut across planes. Record them as **concern** tags, not as planes.
 3. **Every offering has one home plane** (where the thing it owns or changes lives) and can **also touch** others. Spanning planes is normal.
 4. **A component passes four tests:** customers ask for it by name, it has one owner, it has its own release stream, and it deserves its own channel and docs. See [the component test](offerings-menu.md#is-it-a-component).
-5. **Map repos to offerings; don't restructure repos first.** Restructure only when an offering can't be released on its own, and make that its own RFC with evidence.
+5. **Map code to offerings; don't restructure first.** Works for monorepos (by directory) and many repos alike. Restructure only when an offering can't be released on its own, and make that its own RFC with evidence. See [code and repos](projects-and-releases.md#code-and-repos).
 6. **Name ad-hoc work before improving it.** Something done by ticket today is already an offering at Level 1. Naming it makes its noise measurable, which is the baseline for improving it. See [maturity-paths.md](maturity-paths.md).
 7. **Requests are not releases.** A customer using an offering as it is (adding a secret) is a request: fulfilled, measured, never released. Only changes to how the offering works go into a release and onto the calendar. See [requests versus releases](offerings-menu.md#requests-versus-releases).
 8. **Journeys hold the story; building blocks hold the noise.** Customers arrive with jobs (a new integration, a new service, a new joiner) that need several building blocks (a secret, a firewall change). Link one journey request to its building-block requests. See [journeys and building blocks](offerings-menu.md#journeys-and-building-blocks).
+9. **Epics group by outcome; releases group by offering.** A project spanning several offerings has one epic and one release per affected offering, mostly on the same launch date. See [projects-and-releases.md](projects-and-releases.md).
 
 ## Planes
 

@@ -157,6 +157,7 @@ Add these when you run them. Several have a distinct audience, which justifies t
 | Developer Experience | Developer Environments | Product | Developer Control | finops | Category channel |
 | Developer Experience | Docs Sites (publishing each app's docs-as-code site) | Product | Developer Control | — | Category channel |
 | Environments | Performance Environments | Product | Resource | finops, reliability | **Own** (performance engineers) |
+| Environments | UAT Environments | Product | Resource | reliability | **Own, shared** (business testers, QA) |
 | Runtime & Compute | Admin Workstations (managed machines for privileged admin work, e.g. DB engineers) | Product | Resource | security-compliance, governance | **Own** (DB or ops engineers) |
 | AI Engineering | Model Access, Coding Agents, Agent Orchestration, AI Observability | See above | See above | See above | **Own** category channel |
 
@@ -211,7 +212,7 @@ In a shared channel, start each post with the component name (`[System Integrati
 | Thing | Pattern | Example |
 |---|---|---|
 | Offering and Jira component | Outcome noun phrase, Title Case, no tool names | Workload Secrets |
-| Chat channel | The **category** name to start (`IAM & Governance`); the component name once it gets its own | IAM & Governance |
+| Chat channel | The **category** name to start (`IAM & Governance`); the component name once it gets its own. Never the name of the team using it. Other kinds: `Customer ·`, `Partner ·`, `Project ·` ([communication.md](communication.md)) | IAM & Governance |
 | Docs tree | Category root, with one section per offering named exactly as the component | IAM & Governance / Workload Secrets |
 | Fix version | `<Component> <YYYY.MM>` for cadenced work, `<Component> <semver>` for products | `Workload Secrets 2026.11` |
 | Short slug (repos, labels, URLs) | lowercase-hyphenated | `workload-secrets` |

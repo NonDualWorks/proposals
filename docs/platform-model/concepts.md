@@ -25,6 +25,9 @@ The platform model is defined in tool-neutral terms. Jira, Linear and GitHub are
 | **Channel** | Where customers talk to the team. One per category to start, split per offering when volume justifies it. |
 | **Docs tree** | Diátaxis docs per offering, grouped under its category |
 | **Maturity level** | L1 Ticket Ops → L2 Paved Road → L3 Self-Service → L4 Outcome-Driven, per offering |
+| **Project** | Time-bound committed work that changes one or more offerings, then is archived. Named after its primary offering and outcome. |
+| **Launch** | The date a project's outcome becomes available; one calendar entry, usually several releases |
+| **Notice** | A standard announcement: release, maintenance window, disruption, plan change (and deployment, for shared environments) |
 | **Proposal** | An RFC, Lite Proposal or ADR, through the [proposal process](../flow.md). A proposal's offering is the one it affects. |
 
 ## How each tool expresses the concepts
@@ -39,6 +42,7 @@ The platform model is defined in tool-neutral terms. Jira, Linear and GitHub are
 | Release | **Fix version** with a release date (project-scoped, so prefix with the offering) | A **project** (or project milestone) per release, with a target date | A **milestone** with a due date, plus a GitHub **Release** for code |
 | Calendar | Releases page and timeline | Projects timeline and roadmap | Projects roadmap view by milestone date |
 | Journey link | Issue links | Sub-issues or related issues | Sub-issues |
+| Project (outcome) | Epic, due date = launch | Project, target date = launch | Milestone or project, due date = launch |
 | Noise | JQL filter + dashboard gadget by component | Insights by label | Issue search by label; Insights in Projects |
 | Proposal intake and votes | Label `proposal`, Vote button | Triage, or Linear's customer requests | Discussions (Ideas) with upvotes |
 | Phase of a proposal | `prop-*` label (workflow is often locked) | Project status, or a custom workflow state | Project field |

@@ -165,6 +165,8 @@ If it's provisioned (the Free plan covers 3 creators; anyone with Jira access co
 
 ## 4. Microsoft Teams
 
+Channel kinds, naming, shared channels and the standard notices are in [communication.md](communication.md). The Teams specifics:
+
 One Teams team for the platform, customer-facing:
 
 | Channel | Purpose |
