@@ -2,7 +2,7 @@
 
 Context and next steps for anyone (human or AI) picking up work in this repo. Read this first, then [RFC-0000](rfcs/0000-proposal-process.md) and [GOVERNANCE.md](GOVERNANCE.md).
 
-*Last updated: 2026-10-19.*
+*Last updated: 2026-10-22.*
 
 ## Why this repo exists
 
@@ -22,6 +22,7 @@ The same process maps onto an Atlassian stack at work (Bitbucket PRs for proposa
 | "Proposals" GitHub Project | ⬜ Not created yet |
 | Flow diagram (`docs/flow.md`, Mermaid) | ✅ Merged (PR #1) |
 | Interactive flow page | ✅ Live at <https://nondualworks.github.io/proposals/flow/> (GitHub Pages from `main` `/docs`). `#atlassian` opens the work view. |
+| Platform model reference (`docs/platform-model/`) | ✅ Offerings menu, planes and concerns, maturity paths, Atlassian setup, new-customer playbook, offering template |
 | First real proposal | ⬜ Not started |
 
 ## Conventions (quick reference)
@@ -99,6 +100,8 @@ Raised while explaining the process; not yet proposed. Each is a Lite Proposal u
 - **Who runs triage.** `docs/flow.md` shows the Decider running weekly triage, which is true only because the maintainer is also the decider today. Decide whether triage belongs to the maintainer or the decider as a rule.
 
 ### Work adaptation notes
+
+The full, current version of these notes is [`docs/platform-model/atlassian-setup.md`](docs/platform-model/atlassian-setup.md); the summary below is kept for context.
 
 For when this process is proposed at work (Atlassian + Teams; Jira workflows are locked enterprise-wide). The venue mapping is in [`docs/flow.md`](docs/flow.md).
 
