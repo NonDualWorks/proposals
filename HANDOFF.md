@@ -2,7 +2,7 @@
 
 Context and next steps for anyone (human or AI) picking up work in this repo. Read this first, then [RFC-0000](rfcs/0000-proposal-process.md) and [GOVERNANCE.md](GOVERNANCE.md).
 
-*Last updated: 2026-10-22.*
+*Last updated: 2026-10-22 (end of the platform-model session).*
 
 ## Why this repo exists
 
@@ -22,7 +22,8 @@ The same process maps onto an Atlassian stack at work (Bitbucket PRs for proposa
 | "Proposals" GitHub Project | ⬜ Not created yet |
 | Flow diagram (`docs/flow.md`, Mermaid) | ✅ Merged (PR #1) |
 | Interactive flow page | ✅ Live at <https://nondualworks.github.io/proposals/flow/> (GitHub Pages from `main` `/docs`). `#atlassian` opens the work view. |
-| Platform model reference (`docs/platform-model/`) | ✅ Offerings menu, planes and concerns, maturity paths, Atlassian setup, new-customer playbook, offering template |
+| Platform model reference (`docs/platform-model/`) | ✅ Merged (PR #4): concepts and tool mapping, offerings menu and 15-component starter set, maturity paths, communication, projects and releases, Atlassian setup, new-customer playbook, offering template |
+| `platform-discovery` skill (experimental) | ⬜ Planned; contract below in *Track B* |
 | First real proposal | ⬜ Not started |
 
 ## Conventions (quick reference)
@@ -43,6 +44,64 @@ Full definitions are in RFC-0000. These are the values the front matter and labe
 - **Commits:** imperative subject, prefixed with the proposal it belongs to when there is one (`RFC-0001: …`, `Lite-0002: …`).
 
 ## Next steps, in order
+
+There are two tracks. **Track A** is the proposal process and Release Desk (steps 1–5 below). **Track B** is the platform-discovery kit, planned in the platform-model session. Respect the WIP limits in GOVERNANCE.md across both.
+
+### Track B: the `platform-discovery` slice (experimental)
+
+**Goal:** someone who clones this repo can turn a customer's request history into named offerings with numbers in minutes, which is what makes the platform model worth adopting.
+
+**Why no RFC yet:** it's a reversible experiment. Mark it *experimental*, gather feedback in an Ideas discussion, and write an RFC when it graduates or when adapters start changing real tools.
+
+**Three layers** (only the first two are in this slice):
+
+| Layer | Form | Holds |
+|---|---|---|
+| Model | `platform.yaml` manifest, schema in `schema/platform.schema.yaml` | One customer's categories and offerings: name, kind, home plane, concerns, owner, channel, docs, release pattern, level, evidence |
+| Judgment | Skills in `skills/` | Discovery, offering design, bootstrap, proposals, projects, calendar, maturity review |
+| Tool mechanics | Adapters in `adapters/` (later) | Idempotent plan → apply per tool: Jira, Teams, Confluence, Slack, Linear, GitHub |
+
+**Input contract, three modes:**
+
+| Mode | Input | Produces |
+|---|---|---|
+| A. Export | CSV or JSON of ~90 days of requests | Offerings, counts, lead times, journeys |
+| B. Paste | 20–50 requests as plain lines | Offerings and grouping, no lead times |
+| C. Interview | ~10 questions, no data | Menu-based draft marked *unvalidated* |
+
+Mode A columns: **required** `id`, `created`, `summary`; **recommended** `description`, `resolved`, `requester_team`; **optional** `labels`, `component`, `status`, `assignee`, `source`. Extra columns are ignored. Recognize Jira (*Issue key, Created, Summary, Resolved*) and ServiceNow (*number, opened_at, short_description*) exports; accept a `mapping.yaml` otherwise. Optional `context.yaml`: customer name, tools, known owners.
+
+**Output contract:**
+1. `platform.yaml` draft: every offering has `evidence:` (request IDs) and `confidence: high | medium | low`.
+2. `discovery-report.md`: offerings with counts, share, median lead time and examples; journeys versus building blocks with linking requests; coverage and gaps against the menu; the three noisiest L1 offerings, each with a suggested first Lite Proposal; questions to confirm with the customer.
+
+**Guarantees:** nothing invented (every claim traces to request IDs); data stays local (tell users to replace requester names with team names first).
+
+**Layout for the slice:**
+
+```
+schema/platform.schema.yaml          manifest format
+skills/platform-discovery/SKILL.md   the skill; cites docs/platform-model/, doesn't copy it
+examples/acme/requests.csv           ~60 synthetic requests: a few secrets + firewall journeys, one obvious noisy offering
+examples/acme/expected/              what a good report and manifest look like
+```
+
+**The first-run experience to aim for:** clone → run on `examples/acme/requests.csv` → read the report (about 2 minutes, no data needed) → run on your own export or pasted list.
+
+**Pioneers:** the maintainer's work team (sanitized export), then a friend's organization as the second real user.
+
+**Later skills:** `offering-design`, `platform-bootstrap` (plan then apply through adapters), `proposal-author` and `proposal-review`, `project-lifecycle`, `release-calendar`, `maturity-review`.
+
+### Notes on the idea as a business
+
+Recorded from the session's critique, for when this is pitched to customers:
+
+- **Strengths:** it addresses why platform initiatives fail (no clear offerings, no measurement); ticket-history discovery is a concrete, evidence-based wedge; tool-neutral; early visible wins (calendar, channels, noise report).
+- **Weaknesses:** untested on a real customer; enterprise data is messy and spread across systems; "rating the platform" is a weak pitch since maturity assessments are widely available; it's an operating-model change that decays without a sponsor and an internal owner; the full model can overwhelm an L1 team; getting ticket exports approved takes time; it competes for focus with Pier and the catalog.
+- **What would make it convincing:** two or three case studies with before-and-after noise and lead time at 90 days; a small fixed offer (for example a two-week *Platform Discovery* with fixed deliverables and an optional 90-day follow-through); tooling that's hard to copy (discovery skill, manifest, adapters), which also connects to the product suite.
+- **Pitch the outcome, not the rating:** "fewer tickets and faster lead time on your three noisiest offerings in 90 days, measured." Start customers with about five offerings, one channel per category and the noise report.
+
+### Track A: proposal process and Release Desk
 
 Each step is a real use of the process, so the process gets tested as it's used.
 
