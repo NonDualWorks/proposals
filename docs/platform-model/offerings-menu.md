@@ -37,6 +37,19 @@ Not in the CNCF list, but almost universal once a team runs its platform as a pr
 | **Platform Support & Enablement** | A support channel, office hours, onboarding, training | Cross-cutting |
 | **Roadmap & Proposals** | A published roadmap and calendar, and a way to ask for things | Cross-cutting |
 
+### Emerging category: AI Engineering
+
+Platform teams increasingly run the infrastructure for AI-assisted software delivery. Typical offerings:
+
+| Offering | What the customer gets | Kind | Home plane | Concerns |
+|---|---|---|---|---|
+| **Model Access** | Approved models, keys, quotas and guardrails through one gateway | Building block | Security | governance, finops, security-compliance |
+| **Coding Agents** | Cloud agents that work on their repos in sandboxes | Product | Developer Control | security-compliance, finops |
+| **Agent Orchestration** | Running, scheduling and connecting agents to approved tools | Product | Integration & Delivery | governance, reliability |
+| **AI Observability** | Traces, evaluations and cost for agent and model calls | Product | Monitoring & Logging | reliability, finops |
+
+Start with Model Access: every other AI offering depends on it, and it's where governance and cost control sit. Agents are also *customers* of the platform: they read the catalog and docs, which is one more reason to keep docs consistently structured.
+
 ### How to read the menu
 
 - **It's a menu, not a checklist.** Most teams start with five to eight. Nearly universal: Software Catalog, Docs Hub, Golden Paths, CI, CD, Runtime, Observability, Identity & Secrets, Platform Support. The rest depend on the organization (data services often belong to a DBA team, for example).
@@ -129,16 +142,64 @@ A comprehensive set for a platform team that runs EKS fleets, CI/CD pipelines, a
 | | Deployments & Releases | Product | Integration & Delivery | reliability | Tool and process changes | `Deployments & Releases <semver>` |
 | | Infrastructure Modules | Product | Integration & Delivery | finops | Module versions | `Infrastructure Modules <semver>` |
 | **Observability** | Observability | Product | Monitoring & Logging | reliability, finops | Stack and dashboard changes | `Observability <YYYY.MM>` |
-| **Developer Portal** | Software Catalog | Product | Developer Control | — | Schema and portal changes | `Software Catalog <semver>` |
+| **Developer Experience** | Software Catalog | Product | Developer Control | — | Schema and portal changes | `Software Catalog <semver>` |
 | | Docs Hub | Product | Developer Control | — | Structure and template changes | `Docs Hub <YYYY.MM>` |
 | **Platform Support** | Platform Support | Support | Cross-cutting | — | Never | — |
 
 Plus one channel that isn't an offering: **Platform Proposals**, for the proposal process.
 
+### Optional additions
+
+Add these when you run them. Several have a distinct audience, which justifies their own channel from the start.
+
+| Category | Component | Kind | Home plane | Concerns | Channel |
+|---|---|---|---|---|---|
+| Developer Experience | Developer Environments | Product | Developer Control | finops | Category channel |
+| Developer Experience | Docs Sites (publishing each app's docs-as-code site) | Product | Developer Control | — | Category channel |
+| Environments | Performance Environments | Product | Resource | finops, reliability | **Own** (performance engineers) |
+| Runtime & Compute | Admin Workstations (managed machines for privileged admin work, e.g. DB engineers) | Product | Resource | security-compliance, governance | **Own** (DB or ops engineers) |
+| AI Engineering | Model Access, Coding Agents, Agent Orchestration, AI Observability | See above | See above | See above | **Own** category channel |
+
+With every addition the set passes 15. Either prefix component names with the category (`AI · Model Access`) so the dropdown groups itself, or create components only as each offering gets real requests.
+
 Notes:
 - **Deployments & Releases** and **Infrastructure Modules** are named for outcomes. The tools behind them (a release-management tool such as Release Desk; Terraform) go in the catalog's *backed by* field.
 - **Fix versions are for changes only.** Requests on any of these components never get one (see [requests versus releases](#requests-versus-releases)).
 - **Not included, add if you run them:** Developer Environments, Golden Paths & Templates (if separate from Service Onboarding), Data & Messaging, Networking & Ingress (if separate from Network Access), Policy & Compliance and Cost Visibility as products.
+
+## Patterns for tricky cases
+
+### Flavors, not components
+
+When customers pick from variants of the same thing (trunk-based, feature-branch and hotfix development environments), that's **one component with flavors**. Same owner, channel and release stream. Record the flavor on each request (a field or a label such as `flavor-hotfix`) so noise is still visible per flavor, and give each flavor its own how-to.
+
+Split a flavor into its own component only when its owner or audience differs. A hotfix flavor used mostly by release managers may belong to Deployments & Releases instead; let request data decide.
+
+### Offering versus substrate
+
+What customers get and what it runs on are different offerings. Development environments may be namespaces on a dev cluster: **Developer Environments** is the offering developers use; **EKS Clusters** is the substrate. Patching the dev cluster is a release of EKS Clusters, not of Developer Environments. Link it from the Developer Environments docs (*Reference: maintenance windows*) so users see it coming.
+
+### Rings
+
+When one change rolls through several environments, and customers need to know when theirs is affected, give each **ring** its own release and date:
+
+```
+EKS Clusters 2026.11 – AMI patch (dev)      early in the month
+EKS Clusters 2026.11 – AMI patch (perf)
+EKS Clusters 2026.11 – AMI patch (prod)     a week later
+```
+
+### Distinct audience, own component and channel
+
+A specialist team with its own needs (performance engineers using heavy dedicated environments; DB engineers using admin workstations) gets its own component and its own channel from the start, even at low volume. The test is *who asks*, not how often.
+
+### Shared responsibility
+
+Say clearly where the offering stops. For **Observability**: the team runs the stack (for example Grafana and its data sources) and onboards developers; **developers own their dashboards and alerts**. Put this boundary in the offering's Explanation docs, so requests for "fix my dashboard" are routed as guidance, not as work on the offering.
+
+### Environment-centric delivery
+
+Some teams deliver **whole environments** (infrastructure and apps together) rather than separate CI, CD and infrastructure offerings. In that shape, Infrastructure Modules becomes a building block of the environment offering, not something customers request on its own. Both shapes are fine; pick the one that matches what customers actually ask for, and keep the menu as the reference.
 
 ## Naming conventions
 

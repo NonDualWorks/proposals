@@ -11,6 +11,9 @@ The platform model is defined in tool-neutral terms. Jira, Linear and GitHub are
 | **Offering** | Something customers ask for by name, with one owner, its own docs, and (usually) its own releases. The unit everything maps to. |
 | **Category** | A slot from the [offerings menu](offerings-menu.md) that groups offerings, such as Runtime or IAM & Governance |
 | **Kind** | What sort of offering it is: **journey**, **building block**, **product** or **support** (see [offerings-menu.md](offerings-menu.md#journeys-and-building-blocks)) |
+| **Flavor** | A variant of one offering that customers choose between (trunk-based vs. feature-branch environments). Recorded on requests, not a separate component. |
+| **Substrate** | The offering another offering runs on (Developer Environments run on EKS Clusters). Changes to the substrate are released there. |
+| **Ring** | One stage of a change rolling through environments (dev → perf → prod), released and dated separately when customers need to know |
 | **Plane** | Where the offering lives in the platform's architecture. One home plane, optionally others it touches. |
 | **Concern** | Why the work exists: `security-compliance`, `governance`, `finops`, `reliability` |
 | **Owner** | The one person accountable for an offering, and the default assignee for its requests |
