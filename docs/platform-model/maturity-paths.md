@@ -37,18 +37,19 @@ Name it → route it → measure the noise → standardize → self-serve → de
 
 ## Worked example: Workload Secrets
 
-**The situation today.** An application team introduces a new secret. The platform team creates it in the vault, writes glue to deliver it, and creates a Kubernetes secret for the workload, by hand, on request.
+**The situation today.** An application team introduces a new secret. The platform team creates it in the vault, writes glue to deliver it, and creates a Kubernetes secret for the workload, by hand, on request. The secret rarely comes alone: it's usually one step in a new integration (often with a firewall or security-group change and approvals) or a new service. Track it as a building-block request linked to that journey.
 
 **The offering.** Start from the customer's job: *my app needs a credential at runtime, safely.*
 
 | | |
 |---|---|
 | Offering / component | **Workload Secrets** |
-| Category | Identity & Secrets |
+| Category | IAM & Governance |
+| Kind | Building block, usually requested as part of a System Integrations or Service Onboarding journey |
 | Home plane | Security |
 | Also touches | Resource (Kubernetes secrets), Integration & Delivery (deploy manifests) |
 | Concerns | security-compliance |
-| Teams channel and Confluence root | Workload Secrets |
+| Channel | IAM & Governance (shared with the other journeys and building blocks in the category) |
 
 **What each level looks like:**
 
@@ -63,7 +64,7 @@ At L4 the aim is to remove most secrets, not to deliver them faster.
 
 **Getting started:**
 
-1. Create the **Workload Secrets** component, lead and channel. Route every secrets request there. The noise becomes measurable on its own.
+1. Create the **Workload Secrets** component and lead. Route every secrets request there, linked to its journey issue where there is one. The noise becomes measurable on its own.
 2. Write honest **L1 docs**: *How-to: request a secret* (today's process) and *Reference: naming convention* (the target). Documenting L1 truthfully makes the move to L2 visible.
 3. **L2** as a Lite Proposal: request form, naming convention, one sync mechanism.
 4. **L3** as a Full RFC with a pioneer team: self-service paths and per-team policies. Its Measured Report proves Interfaces L1 → L3.

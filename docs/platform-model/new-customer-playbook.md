@@ -12,7 +12,9 @@ You need: read access to their ticket history and repos, a few hours with two or
 
 Pull the last 90 days of requests to the platform or ops team, from tickets, chat and email. Group them by **what the requester needed**, not by who did the work.
 
-Each group is an offering that already exists at Level 1, even if nobody has named it. Typical groups: new secrets, DNS records, cluster access, new environments, pipeline fixes, "why did my deploy fail".
+Each group is an offering that already exists at Level 1, even if nobody has named it. Typical groups: new joiners' access, new services, integrations with other systems, new secrets, DNS records, cluster access, new environments, pipeline fixes, "why did my deploy fail".
+
+Separate **journeys** (the job: a new integration) from **building blocks** (the steps: a secret, a firewall change). Requests that look simple usually belong to a journey.
 
 ## 2. Match the groups to the menu
 
@@ -22,7 +24,7 @@ Note what's **missing**. Gaps in the nearly universal set (Catalog, Docs, Golden
 
 ## 3. Pick the first five to eight offerings
 
-Choose the ones that pass [the component test](offerings-menu.md#is-it-a-component) and carry the most requests. Always include **Platform Support** as the catch-all.
+Choose the ones that pass [the component test](offerings-menu.md#is-it-a-component) and carry the most requests, starting from the [starter component set](offerings-menu.md#starter-component-set). Always include **Platform Support** as the catch-all.
 
 Name each one using the [naming conventions](offerings-menu.md#naming-conventions): an outcome, not a tool.
 
@@ -31,8 +33,8 @@ Name each one using the [naming conventions](offerings-menu.md#naming-convention
 For every chosen offering, using [offering-template.md](offering-template.md):
 
 - [ ] Jira component, with lead and default assignee
-- [ ] Teams channel with the same name
-- [ ] Confluence tree with the same name and the Diátaxis skeleton
+- [ ] Its category channel (one per category to start)
+- [ ] A section with the same name in its category's docs tree, with the Diátaxis skeleton
 - [ ] Catalog entry: home plane, also touches, concerns, repos, current level
 - [ ] First fix version, if it has a release cadence
 

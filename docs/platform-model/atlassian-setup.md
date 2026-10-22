@@ -10,18 +10,24 @@ How to run the platform model and the proposal process on Jira, Bitbucket, Confl
 |---|---|
 | A **component** (lead = owner and default assignee) | Jira |
 | A series of **fix versions** with release dates, which make the calendar | Jira |
-| A **channel**, named exactly like the component | Teams |
-| A **page tree** in Diátaxis form, named exactly like the component | Confluence |
+| A **channel**: the category's channel to start, its own when busy | Teams |
+| A **section** of its category's page tree, in Diátaxis form, named exactly like the component | Confluence |
 | One or more **repos**, mapped in the catalog | Bitbucket |
 
 ## 1. Jira: offerings
 
 ### Components
 
-Create one component per offering (see [the component test](offerings-menu.md#is-it-a-component)). For each:
+Create one component per offering. The [starter component set](offerings-menu.md#starter-component-set) has fifteen ready to use. For each:
 
 - **Component lead:** the offering owner. Set **default assignee** to the component lead, so issues route themselves.
-- **Description:** category, home plane, concerns, Teams channel link, docs link. Jira then carries a light version of the catalog.
+- **Description:** category, kind, home plane, concerns, channel link, docs link. Jira then carries a light version of the catalog.
+
+### Requests and changes
+
+- **Requests** (a customer using an offering as it is) use a **Service Request** issue type if your project has one, otherwise the label `request`. They get a component, **never a fix version**.
+- **Changes** to how an offering works get a component **and** a fix version.
+- **Journeys:** one issue on the journey component (People Access, Service Onboarding, System Integrations, Vendor Licenses), **linked** to one issue per building block it needs (Workload Secrets, Network Access). See [journeys and building blocks](offerings-menu.md#journeys-and-building-blocks).
 
 ### Fix versions and the calendar
 
@@ -133,7 +139,10 @@ project = DEVOPS AND labels = prop-accepted AND issueLinkType is EMPTY
 project = DEVOPS AND labels = proposal AND component = "Workload Secrets"
 
 -- Noise per offering, to pick the next improvement (group by component in a dashboard gadget)
-project = DEVOPS AND (labels IS EMPTY OR labels NOT IN (proposal)) AND created >= -90d
+project = DEVOPS AND labels = request AND created >= -90d
+
+-- Noise on one building block, and which journeys it came from (check the linked issues)
+project = DEVOPS AND component = "Workload Secrets" AND labels = request AND created >= -90d
 ```
 
 Replace `platform-team` with your Jira group's name.
@@ -160,7 +169,7 @@ One Teams team for the platform, customer-facing:
 
 | Channel | Purpose |
 |---|---|
-| **One per offering**, named exactly as the component | Support and discussion for that offering. Pin the docs link and a Jira filter for its open issues. |
+| **One per category** to start (IAM & Governance, Runtime & Images, Delivery, Observability, Developer Portal) | Support and discussion for the offerings in that category. Posts start with the component name: `[System Integrations] …`. Split an offering into its own channel when it carries most of the traffic or has a distinct audience. |
 | **Platform Support** | Anything that doesn't fit an offering yet; triage moves it on |
 | **Platform Proposals** | One post per idea; the comment-period **poll** goes in that post's thread |
 
@@ -178,13 +187,18 @@ In your team's existing space:
 ```
 Platform
 ├── Offerings catalog              ← Page Properties Report over every offering page
-├── EKS Clusters                   ← one tree per offering, named exactly as the component
-│   ├── Tutorials
-│   ├── How-to guides
-│   ├── Reference
-│   └── Explanation
-├── Workload Secrets
+├── IAM & Governance               ← one tree per category
+│   ├── People Access              ← one section per offering, named exactly as the component
+│   │   ├── Tutorials
+│   │   ├── How-to guides
+│   │   ├── Reference
+│   │   └── Explanation
+│   ├── System Integrations
+│   ├── Workload Secrets
 │   └── …
+├── Runtime & Images
+│   ├── EKS Clusters
+│   └── Golden Images
 └── Platform Proposals
     ├── How we propose             ← links the flow (#atlassian) and this setup
     ├── Discovery briefs           ← edited here, from a template
@@ -209,7 +223,7 @@ A reusable template for the monthly ranking: place the top-voted ideas on an **i
 
 ## 8. Bootstrap
 
-1. Create the components for the offerings you run today (including L1 ones such as Workload Secrets), with leads, channels and Confluence roots.
+1. Create the components for the offerings you run today (start from the [starter set](offerings-menu.md#starter-component-set), including L1 ones such as Workload Secrets), with leads, category channels and Confluence trees.
 2. Set up the proposals labels, board and filters.
 3. Take an **RFC-0000 adapted for work** through the process with the team: same flow, real reviewers instead of personas, named deciders. The team agrees to the process by using it.
 4. Check the dry run: the RFC appears on the Proposals board and **not** on the delivery board.

@@ -9,17 +9,19 @@ Copy this for each new offering. The first part is the **catalog entry** (a Page
 ## Catalog entry
 
 ```yaml
-offering: Workload Secrets            # also the Jira component, Teams channel and Confluence root
+offering: Workload Secrets            # also the component name and its docs section name
 slug: workload-secrets
-category: Identity & Secrets          # slot from the offerings menu
+category: IAM & Governance            # slot from the offerings menu
+kind: building-block                  # journey | building-block | product | support
+requested-via: [System Integrations, Service Onboarding]   # journeys that usually need it
 home-plane: security                  # developer-control | integration-delivery | resource | monitoring-logging | security | cross-cutting
 also-touches: [resource, integration-delivery]
-concerns: [security-compliance]       # security-compliance | finops | reliability | …
+concerns: [security-compliance]       # security-compliance | governance | finops | reliability | …
 owner: "@name"                        # Jira component lead and default assignee
-teams-channel: Workload Secrets
-docs: "Confluence: Platform / Workload Secrets"
+channel: IAM & Governance             # category channel until it earns its own
+docs: "Confluence: Platform / IAM & Governance / Workload Secrets"
 release-cadence: on change            # monthly | quarterly | on change | none
-fix-version-pattern: "Workload Secrets <YYYY.MM>"
+fix-version-pattern: "Workload Secrets <YYYY.MM>"   # changes only; requests never get a fix version
 repos: [workload-secrets-policies, platform-eso-config]
 backed-by: [Vault, External Secrets Operator]
 current-level: L1                     # L1 Ticket Ops | L2 Paved Road | L3 Self-Service | L4 Outcome-Driven
@@ -45,7 +47,7 @@ proposals: []                         # RFCs and Lite Proposals affecting this o
 ├── How-to guides
 │   ├── Request / create a <thing>                   matches the current level honestly
 │   ├── Change or rotate a <thing>
-│   └── Get help                                     the Teams channel, Jira component, response times
+│   └── Get help                                     the channel, the component to file against, response times
 ├── Reference
 │   ├── Naming and conventions
 │   ├── Limits, quotas and SLOs
@@ -62,8 +64,8 @@ At L1, the how-to describes today's manual process truthfully. Updating it as th
 ## Setup checklist
 
 - [ ] Jira component created; lead and default assignee set; description filled in
-- [ ] Teams channel created with the same name; docs link and Jira filter pinned
-- [ ] Confluence root created with the same name, this skeleton and the catalog table
+- [ ] Category channel exists (or its own channel, if busy); docs link and a filter for its open requests pinned
+- [ ] Confluence section created under the category tree with the same name, this skeleton and the catalog table
 - [ ] Listed on the *Offerings catalog* page (automatic via Page Properties Report)
 - [ ] First fix version created, if it has a cadence
 - [ ] Requests are being routed here; baseline collection started

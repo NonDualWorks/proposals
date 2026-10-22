@@ -9,7 +9,8 @@ How a platform engineering team describes what it offers, so customers, tools, d
 | File | Type | Use it to |
 |---|---|---|
 | [README.md](README.md) | Explanation | Understand the model and why it's shaped this way |
-| [offerings-menu.md](offerings-menu.md) | Reference | Pick offerings from the generic menu, test them, name them |
+| [concepts.md](concepts.md) | Reference | The tool-neutral vocabulary, and how Jira, Linear and GitHub express it |
+| [offerings-menu.md](offerings-menu.md) | Reference | The generic menu, journeys and building blocks, requests versus releases, the component test, a 15-component starter set, naming |
 | [maturity-paths.md](maturity-paths.md) | Explanation | Evolve an ad-hoc (L1) offering to self-service, with a worked example |
 | [atlassian-setup.md](atlassian-setup.md) | How-to | Set the model up in Jira, Teams, Confluence and Bitbucket, including the proposals board |
 | [new-customer-playbook.md](new-customer-playbook.md) | How-to | Apply all of this when approaching a new customer |
@@ -23,12 +24,14 @@ Plane          Resource                    a tag: where it lives in the platform
     └ Offering EKS Clusters                what customers ask for by name
         ├ Jira component (lead = owner, default assignee)
         ├ Fix versions → release dates → the published calendar
-        ├ Teams channel (support and discussion)
-        ├ Confluence tree in Diátaxis form (tutorial, how-to, reference, explanation)
+        ├ Chat channel (per category to start, per offering when busy)
+        ├ Docs tree in Diátaxis form (tutorial, how-to, reference, explanation)
         └ Repos, mapped many-to-one in the catalog
 ```
 
-**The offering is the unit.** Everything a customer touches maps to it one-to-one: the component they file against, the channel they ask in, the docs they read, the releases on the calendar. Repos are the exception: they map many-to-one, because real code doesn't line up neatly with offerings.
+**The offering is the unit.** It has one name everywhere: the component customers file against, the docs they read, the releases on the calendar, and eventually its own channel. Two things map many-to-one on purpose: **channels** start one per category (busy offerings get their own later), and **repos** map to offerings in the catalog, because real code doesn't line up neatly.
+
+**Concepts first, tools second.** The model is defined in tool-neutral terms in [concepts.md](concepts.md). Jira components and fix versions are one way to run it; Linear and GitHub are others.
 
 ## Principles
 
@@ -38,6 +41,8 @@ Plane          Resource                    a tag: where it lives in the platform
 4. **A component passes four tests:** customers ask for it by name, it has one owner, it has its own release stream, and it deserves its own channel and docs. See [the component test](offerings-menu.md#is-it-a-component).
 5. **Map repos to offerings; don't restructure repos first.** Restructure only when an offering can't be released on its own, and make that its own RFC with evidence.
 6. **Name ad-hoc work before improving it.** Something done by ticket today is already an offering at Level 1. Naming it makes its noise measurable, which is the baseline for improving it. See [maturity-paths.md](maturity-paths.md).
+7. **Requests are not releases.** A customer using an offering as it is (adding a secret) is a request: fulfilled, measured, never released. Only changes to how the offering works go into a release and onto the calendar. See [requests versus releases](offerings-menu.md#requests-versus-releases).
+8. **Journeys hold the story; building blocks hold the noise.** Customers arrive with jobs (a new integration, a new service, a new joiner) that need several building blocks (a secret, a firewall change). Link one journey request to its building-block requests. See [journeys and building blocks](offerings-menu.md#journeys-and-building-blocks).
 
 ## Planes
 
@@ -67,7 +72,7 @@ Give each offering three tags:
 |---|---|---|
 | **Home plane** | One plane | Where the thing it owns or changes lives |
 | **Also touches** | Zero or more planes | What it relies on |
-| **Concerns** | `security-compliance`, `finops`, `reliability`, … | Why it exists |
+| **Concerns** | `security-compliance`, `governance`, `finops`, `reliability`, … | Why it exists |
 
 The concern tag lets you ask "everything we do for compliance" across the catalog, which is useful for audits.
 
